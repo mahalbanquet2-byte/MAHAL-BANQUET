@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Mahal Banquet | Luxury Event Venue Nepal</title>
     
-    <!-- Fonts: Cormorant Garamond (Serif), Montserrat (Sans), Cinzel (Decorative), Great Vibes (Script) -->
+    <!-- Performance Optimization: Preconnect to Image CDNs -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://i.imgur.com">
+    <link rel="preconnect" href="https://images.unsplash.com">
+    
+    <!-- Fonts: Cormorant Garamond (Serif), Montserrat (Sans), Cinzel (Decorative), Great Vibes (Script) -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Great+Vibes&family=Montserrat:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
@@ -40,6 +44,7 @@
               'shimmer': 'shimmer 2s linear infinite',
               'glow': 'glow 3s ease-in-out infinite alternate',
               'ken-burns': 'kenBurns 20s ease-in-out infinite alternate',
+              'gradient-x': 'gradient-x 15s ease infinite',
             },
             keyframes: {
               float: {
@@ -61,7 +66,17 @@
               kenBurns: {
                 '0%': { transform: 'scale(1) translate(0, 0)' },
                 '100%': { transform: 'scale(1.15) translate(-2%, -2%)' },
-              }
+              },
+              'gradient-x': {
+                '0%, 100%': {
+                  'background-size': '200% 200%',
+                  'background-position': 'left center'
+                },
+                '50%': {
+                  'background-size': '200% 200%',
+                  'background-position': 'right center'
+                },
+              },
             }
           }
         }
@@ -70,7 +85,7 @@
     <style>
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
-        width: 8px;
+        width: 6px;
       }
       ::-webkit-scrollbar-track {
         background: #0F0F0F;
@@ -86,24 +101,36 @@
         background-color: #0F0F0F;
         color: #FFFFF0;
         font-family: 'Montserrat', sans-serif;
+        -webkit-tap-highlight-color: transparent;
       }
       
       h1, h2, h3, h4, h5, h6 {
         font-family: 'Cinzel', serif;
       }
 
-      /* Crystal Glass Effect */
+      /* Optimized Crystal Glass Effect */
+      /* Mobile First: Lower blur for performance */
       .crystal-glass {
-        background: rgba(255, 255, 255, 0.02); /* Ultra clear */
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 0 20px -5px rgba(212, 175, 55, 0.15); /* Gold glow on edges */
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform, backdrop-filter;
+      }
+      
+      /* Desktop: Richer blur */
+      @media (min-width: 768px) {
+        .crystal-glass {
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+          box-shadow: 0 0 20px -5px rgba(212, 175, 55, 0.15);
+        }
       }
       
       .crystal-glass:hover {
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(255, 255, 255, 0.05);
         border-color: rgba(212, 175, 55, 0.3);
         box-shadow: 0 0 30px -5px rgba(212, 175, 55, 0.25);
       }
@@ -118,6 +145,22 @@
       /* 3D Preserves */
       .transform-style-3d {
         transform-style: preserve-3d;
+      }
+      
+      /* Hide scrollbar for gallery tabs */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      
+      /* Mobile Form Input Fix - prevents iOS zoom */
+      @media screen and (max-width: 768px) {
+        input, select, textarea {
+          font-size: 16px !important;
+        }
       }
     </style>
   <script type="importmap">

@@ -10,7 +10,7 @@ const Contact = () => {
       <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-gold-500/10 rounded-full blur-[100px]"></div>
 
-      <div className="container mx-auto px-6 py-12 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 py-12 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
           
           {/* Info Side */}
@@ -42,8 +42,8 @@ const Contact = () => {
             </p>
 
             <div className="space-y-6">
-              <div className="group crystal-glass p-6 md:p-8 rounded-3xl transition-all duration-500">
-                <div className="flex items-start gap-6">
+              <div className="group crystal-glass p-5 md:p-8 rounded-3xl transition-all duration-500">
+                <div className="flex items-start gap-4 md:gap-6">
                   <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-black/20 flex items-center justify-center text-gold-500 shrink-0 border border-white/5 group-hover:scale-110 transition-transform">
                     <MapPin size={24} />
                   </div>
@@ -54,8 +54,8 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div className="group crystal-glass p-6 md:p-8 rounded-3xl transition-all duration-500">
-                <div className="flex items-start gap-6">
+              <div className="group crystal-glass p-5 md:p-8 rounded-3xl transition-all duration-500">
+                <div className="flex items-start gap-4 md:gap-6">
                   <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-black/20 flex items-center justify-center text-gold-500 shrink-0 border border-white/5 group-hover:scale-110 transition-transform">
                     <Phone size={24} />
                   </div>
@@ -67,8 +67,8 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div className="group crystal-glass p-6 md:p-8 rounded-3xl transition-all duration-500">
-                <div className="flex items-start gap-6">
+              <div className="group crystal-glass p-5 md:p-8 rounded-3xl transition-all duration-500">
+                <div className="flex items-start gap-4 md:gap-6">
                   <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-black/20 flex items-center justify-center text-gold-500 shrink-0 border border-white/5 group-hover:scale-110 transition-transform">
                     <Mail size={24} />
                   </div>
@@ -86,7 +86,7 @@ const Contact = () => {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="crystal-glass p-8 md:p-14 rounded-[2rem] md:rounded-[3rem] shadow-2xl relative"
+            className="crystal-glass p-6 md:p-14 rounded-[2rem] md:rounded-[3rem] shadow-2xl relative"
           >
             {/* Gold Accent Line */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
@@ -98,23 +98,23 @@ const Contact = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-xs uppercase tracking-widest text-gold-500/80 ml-2">First Name</label>
-                  <input type="text" name="firstName" required className="w-full bg-black/20 border border-white/10 text-ivory p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all placeholder:text-white/20" placeholder="John" />
+                  <input type="text" name="firstName" required className="w-full bg-black/20 border border-white/10 text-ivory text-base p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all placeholder:text-white/20" placeholder="John" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs uppercase tracking-widest text-gold-500/80 ml-2">Last Name</label>
-                  <input type="text" name="lastName" required className="w-full bg-black/20 border border-white/10 text-ivory p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all placeholder:text-white/20" placeholder="Doe" />
+                  <input type="text" name="lastName" required className="w-full bg-black/20 border border-white/10 text-ivory text-base p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all placeholder:text-white/20" placeholder="Doe" />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <label className="text-xs uppercase tracking-widest text-gold-500/80 ml-2">Email Address</label>
-                <input type="email" name="email" required className="w-full bg-black/20 border border-white/10 text-ivory p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all placeholder:text-white/20" placeholder="john@example.com" />
+                <input type="email" name="email" required className="w-full bg-black/20 border border-white/10 text-ivory text-base p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all placeholder:text-white/20" placeholder="john@example.com" />
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-xs uppercase tracking-widest text-gold-500/80 ml-2">Event Type</label>
-                  <select name="eventType" className="w-full bg-black/20 border border-white/10 text-ivory p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all appearance-none cursor-pointer">
+                  <select name="eventType" className="w-full bg-black/20 border border-white/10 text-ivory text-base p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all appearance-none cursor-pointer">
                     <option className="bg-charcoal" value="Wedding">Wedding</option>
                     <option className="bg-charcoal" value="Reception">Reception</option>
                     <option className="bg-charcoal" value="Corporate">Corporate</option>
@@ -123,16 +123,16 @@ const Contact = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs uppercase tracking-widest text-gold-500/80 ml-2">Guest Count</label>
-                  <input type="number" name="guestCount" className="w-full bg-black/20 border border-white/10 text-ivory p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all placeholder:text-white/20" placeholder="500" />
+                  <input type="number" name="guestCount" className="w-full bg-black/20 border border-white/10 text-ivory text-base p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all placeholder:text-white/20" placeholder="500" />
                 </div>
               </div>
 
               <div className="space-y-2">
                  <label className="text-xs uppercase tracking-widest text-gold-500/80 ml-2">Message</label>
-                 <textarea name="message" rows={4} className="w-full bg-black/20 border border-white/10 text-ivory p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all placeholder:text-white/20" placeholder="Tell us about your requirements..."></textarea>
+                 <textarea name="message" rows={4} className="w-full bg-black/20 border border-white/10 text-ivory text-base p-4 rounded-xl focus:outline-none focus:border-gold-500/50 focus:bg-black/40 transition-all placeholder:text-white/20" placeholder="Tell us about your requirements..."></textarea>
               </div>
 
-              <button type="submit" className="w-full bg-gradient-to-r from-gold-500 to-gold-600 text-onyx font-bold uppercase tracking-widest py-5 rounded-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-300 mt-4 flex items-center justify-center gap-3 group">
+              <button type="submit" className="w-full bg-gradient-to-r from-gold-500 to-gold-600 text-onyx font-bold uppercase tracking-widest py-5 rounded-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-300 mt-4 flex items-center justify-center gap-3 group active:scale-98">
                 Send Inquiry <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
             </form>

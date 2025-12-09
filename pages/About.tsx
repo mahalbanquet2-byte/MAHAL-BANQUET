@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight, MapPin, Navigation, Quote, Instagram, Facebook, Heart, MessageCircle, Scroll } from 'lucide-react';
-import { REVIEWS, COMPANY_ADDRESS } from '../constants';
+import { REVIEWS, COMPANY_ADDRESS, getOptimizedImage } from '../constants';
 
 const About = () => {
   const [currentReview, setCurrentReview] = useState(0);
@@ -23,10 +23,10 @@ const About = () => {
   };
 
   const instagramPosts = [
-    { id: 1, src: "https://i.imgur.com/Tm5NcyQ.jpeg", likes: 124, comments: 12 },
-    { id: 2, src: "https://i.imgur.com/PlzPy7I.jpeg", likes: 89, comments: 5 },
-    { id: 3, src: "https://i.imgur.com/Dr7QFnx.jpeg", likes: 256, comments: 34 },
-    { id: 4, src: "https://i.imgur.com/LWt8wSQ.jpeg", likes: 112, comments: 8 },
+    { id: 1, src: getOptimizedImage("https://i.imgur.com/Tm5NcyQ.jpeg", 'large'), likes: 124, comments: 12 },
+    { id: 2, src: getOptimizedImage("https://i.imgur.com/PlzPy7I.jpeg", 'large'), likes: 89, comments: 5 },
+    { id: 3, src: getOptimizedImage("https://i.imgur.com/Dr7QFnx.jpeg", 'large'), likes: 256, comments: 34 },
+    { id: 4, src: getOptimizedImage("https://i.imgur.com/LWt8wSQ.jpeg", 'large'), likes: 112, comments: 8 },
   ];
 
   return (
@@ -82,9 +82,10 @@ const About = () => {
               <div className="w-full md:w-1/3 relative">
                  <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 shadow-2xl group relative max-w-sm mx-auto md:max-w-none">
                    <img 
-                     src="https://i.imgur.com/ejblp1S.jpeg" 
+                     src={getOptimizedImage("https://i.imgur.com/ejblp1S.jpeg", 'large')} 
                      alt="Baburaja Maharjan" 
                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                     loading="lazy"
                    />
                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
                  </div>
@@ -133,7 +134,13 @@ const About = () => {
                 viewport={{ once: true }}
                 className="group relative aspect-square overflow-hidden rounded-2xl crystal-glass"
               >
-                <img src={post.src} alt="Instagram Post" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img 
+                  src={post.src} 
+                  alt="Instagram Post" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-6 text-white">
                   <div className="flex items-center gap-2">
                     <Heart size={20} fill="white" />

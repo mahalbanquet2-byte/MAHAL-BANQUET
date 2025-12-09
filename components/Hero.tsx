@@ -75,6 +75,8 @@ const Hero = () => {
             src={SLIDES[currentIndex].image} 
             alt={SLIDES[currentIndex].title} 
             className="w-full h-full object-cover"
+            decoding="async"
+            fetchPriority={currentIndex === 0 ? "high" : "auto"}
           />
         </motion.div>
       </AnimatePresence>

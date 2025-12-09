@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Sparkles, X, Check, Calendar, Users, Music, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getOptimizedImage } from '../constants';
 
 // --- DATA DEFINITION ---
 
@@ -23,8 +24,9 @@ const EVENT_CATEGORIES: EventCategory[] = [
     category: 'The Grand Celebration',
     shortDesc: 'Celebrate your union in the lap of luxury. Our grand ballrooms and exquisite service create the perfect backdrop for your fairytale wedding.',
     fullDesc: 'Our wedding packages are designed to turn your dreams into reality. From the moment you step into our grand foyer to the final toast, every detail is meticulously curated. We offer custom floral arrangements, royal mandap setups, and a bridal suite for your convenience. Our culinary team prepares a royal feast that delights every palate, ensuring your special day is etched in memory forever.',
-    image: 'https://i.imgur.com/dMDR7ue.jpeg',
-    detailImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069',
+    // Optimized Imgur and Unsplash
+    image: getOptimizedImage('https://i.imgur.com/dMDR7ue.jpeg', 'large'),
+    detailImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=75&w=1200',
     features: ['Royal Mandap Design', 'Bridal Suite Included', '300-1500 Guest Capacity', 'Custom Floral Themes']
   },
   {
@@ -33,8 +35,8 @@ const EVENT_CATEGORIES: EventCategory[] = [
     category: 'Intimate Beginnings',
     shortDesc: 'Begin your journey of love with an intimate and elegant engagement ceremony tailored to your traditions.',
     fullDesc: 'The engagement is the beautiful first step of your togetherness. We specialize in creating intimate yet majestic settings for ring ceremonies, whether it is a traditional exchange or a modern celebration. Our "Heritage Suite" offers the perfect blend of privacy and luxury, accompanied by curated appetizers and drinks to toast to your future.',
-    image: 'https://i.imgur.com/Aql6rYH.jpeg', 
-    detailImage: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070',
+    image: getOptimizedImage('https://i.imgur.com/Aql6rYH.jpeg', 'large'), 
+    detailImage: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=75&w=1200',
     features: ['Intimate Hall Settings', 'Ring Ceremony Stage', 'Premium Appetizers', 'Photography Zones']
   },
   {
@@ -43,8 +45,8 @@ const EVENT_CATEGORIES: EventCategory[] = [
     category: 'Professional Excellence',
     shortDesc: 'Impress stakeholders and partners with world-class facilities, seamless technology, and impeccable hospitality.',
     fullDesc: 'Mahal Banquet redefines corporate gatherings. Whether it is a product launch, an annual general meeting, or an executive gala, our venues are equipped with state-of-the-art audio-visual technology and high-speed connectivity. Our professional concierge ensures your itinerary runs smoothly, allowing you to focus on business while we handle the experience.',
-    image: 'https://i.imgur.com/vd7nd3L.jpeg',
-    detailImage: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069',
+    image: getOptimizedImage('https://i.imgur.com/vd7nd3L.jpeg', 'large'),
+    detailImage: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=75&w=1200',
     features: ['High-Speed WiFi', 'AV & Projector Setup', 'Corporate Lunch/Dinner', 'VIP Lounge Access']
   },
   {
@@ -53,8 +55,8 @@ const EVENT_CATEGORIES: EventCategory[] = [
     category: 'Bespoke Celebrations',
     shortDesc: 'From milestone anniversaries to cultural festivities, we craft bespoke events that reflect your unique style and vision.',
     fullDesc: 'No celebration is too small or too niche for our dedicated team. We pride ourselves on versatility, hosting everything from Pasni and Bratabandha to milestone birthdays and silver jubilees. Share your vision with us, and we will customize the decor, menu, and flow of the event to perfectly match your expectations, creating a truly personalized celebration.',
-    image: 'https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?q=80&w=2072',
-    detailImage: 'https://images.unsplash.com/photo-1530103862676-de3c9a59af38?q=80&w=2000',
+    image: 'https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?q=75&w=1200',
+    detailImage: 'https://images.unsplash.com/photo-1530103862676-de3c9a59af38?q=75&w=1200',
     features: ['Themed Decor', 'Cultural Menu Options', 'Live Music Arrangements', 'Flexible Floor Plans']
   }
 ];
@@ -76,15 +78,15 @@ const EventCard: React.FC<EventCardProps> = ({ event, index, onOpen }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.8, delay: index * 0.1 }}
-      className="relative mb-16 md:mb-24 last:mb-0"
+      className="relative mb-12 md:mb-24 last:mb-0"
     >
       {/* Glassmorphic Container */}
-      <div className="crystal-glass rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 border border-white/10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+      <div className="crystal-glass rounded-[2rem] md:rounded-[2.5rem] p-5 md:p-8 border border-white/10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] relative overflow-hidden group">
         
         {/* Ambient Glow */}
         <div className={`absolute top-0 ${isEven ? 'right-0' : 'left-0'} w-2/3 h-full bg-gradient-to-r from-transparent via-gold-500/5 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none`}></div>
 
-        <div className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 lg:gap-16 items-center`}>
+        <div className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-6 md:gap-8 lg:gap-16 items-center`}>
           
           {/* Image Section */}
           <div className="w-full lg:w-1/2 relative">
@@ -95,6 +97,8 @@ const EventCard: React.FC<EventCardProps> = ({ event, index, onOpen }) => {
               <img 
                 src={event.image} 
                 alt={event.title} 
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition-transform duration-[1.5s] ease-in-out group-hover:scale-115"
               />
               
@@ -113,19 +117,19 @@ const EventCard: React.FC<EventCardProps> = ({ event, index, onOpen }) => {
 
           {/* Text Section */}
           <div className="w-full lg:w-1/2 text-center lg:text-left relative z-10">
-            <span className="inline-block py-1 px-3 rounded-full border border-gold-500/30 bg-gold-500/10 text-gold-400 text-[10px] font-bold uppercase tracking-[0.25em] mb-4">
+            <span className="inline-block py-1 px-3 rounded-full border border-gold-500/30 bg-gold-500/10 text-gold-400 text-[10px] font-bold uppercase tracking-[0.25em] mb-3 md:mb-4">
               {event.category}
             </span>
-            <h3 className="text-3xl md:text-5xl font-cinzel text-ivory mb-4 md:mb-6 leading-tight drop-shadow-lg">
+            <h3 className="text-2xl md:text-5xl font-cinzel text-ivory mb-3 md:mb-6 leading-tight drop-shadow-lg">
               {event.title}
             </h3>
-            <p className="text-white/70 text-base md:text-lg font-light leading-relaxed mb-6 md:mb-8 font-sans">
+            <p className="text-white/70 text-sm md:text-lg font-light leading-relaxed mb-6 md:mb-8 font-sans">
               {event.shortDesc}
             </p>
 
             <button 
               onClick={() => onOpen(event)}
-              className="group/btn relative inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-gold-500/40 text-gold-400 rounded-full overflow-hidden transition-all duration-300 hover:border-gold-500 hover:text-onyx hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] w-full md:w-auto justify-center md:justify-start"
+              className="group/btn relative inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-gold-500/40 text-gold-400 rounded-full overflow-hidden transition-all duration-300 hover:border-gold-500 hover:text-onyx hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] w-full md:w-auto justify-center md:justify-start active:scale-95"
             >
               <span className="absolute inset-0 bg-gold-500 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 ease-in-out"></span>
               <span className="relative z-10 text-xs font-bold uppercase tracking-[0.2em] font-cinzel">Learn More</span>
@@ -164,17 +168,18 @@ const EventModal = ({ event, onClose }: { event: EventCategory, onClose: () => v
         {/* Close Button */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/50 border border-white/10 text-white/70 hover:bg-gold-500 hover:text-onyx hover:border-gold-500 flex items-center justify-center transition-all duration-300"
+          className="absolute top-4 right-4 z-50 w-12 h-12 md:w-10 md:h-10 rounded-full bg-black/50 border border-white/10 text-white/70 hover:bg-gold-500 hover:text-onyx hover:border-gold-500 flex items-center justify-center transition-all duration-300 active:scale-90"
         >
-          <X size={20} />
+          <X size={24} className="md:w-5 md:h-5" />
         </button>
 
         {/* Modal Image Side */}
-        <div className="w-full md:w-5/12 relative min-h-[300px] md:min-h-full">
+        <div className="w-full md:w-5/12 relative min-h-[35vh] md:min-h-full">
           <img 
             src={event.detailImage} 
             alt={event.title} 
             className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 md:opacity-40"></div>
           
@@ -214,13 +219,13 @@ const EventModal = ({ event, onClose }: { event: EventCategory, onClose: () => v
           <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-white/10 mt-auto pb-8 md:pb-0">
             <Link 
               to="/contact" 
-              className="flex-1 bg-gold-500 text-onyx py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-white transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] text-center flex items-center justify-center gap-2"
+              className="flex-1 bg-gold-500 text-onyx py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-white transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] text-center flex items-center justify-center gap-2 active:scale-95"
             >
               Book This Event <ChevronRight size={14} />
             </Link>
             <button 
               onClick={onClose}
-              className="flex-1 border border-white/20 text-white/80 py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-white/5 transition-all text-center"
+              className="flex-1 border border-white/20 text-white/80 py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-white/5 transition-all text-center active:scale-95"
             >
               Close Details
             </button>
@@ -235,6 +240,14 @@ const EventModal = ({ event, onClose }: { event: EventCategory, onClose: () => v
 
 const Events = () => {
   const [selectedEvent, setSelectedEvent] = useState<EventCategory | null>(null);
+
+  useEffect(() => {
+    if (selectedEvent) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [selectedEvent]);
 
   return (
     <div className="bg-onyx min-h-screen relative overflow-x-hidden selection:bg-gold-500/30">
@@ -327,7 +340,7 @@ const Events = () => {
              </p>
              <Link 
                to="/contact" 
-               className="relative z-10 inline-block bg-ivory text-onyx px-8 md:px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-gold-500 transition-colors shadow-2xl"
+               className="relative z-10 inline-block bg-ivory text-onyx px-8 md:px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-gold-500 transition-colors shadow-2xl active:scale-95"
              >
                Consult Our Planner
              </Link>

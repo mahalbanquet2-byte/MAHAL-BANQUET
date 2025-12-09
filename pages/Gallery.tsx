@@ -1,22 +1,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GALLERY_IMAGES } from '../constants';
+import { GALLERY_IMAGES, getOptimizedImage } from '../constants';
 import { X, ZoomIn, MapPin, Loader2, Image as ImageIcon, RefreshCw, Info, Aperture } from 'lucide-react';
-
-// --- CONFIGURATION ---
-// Safely retrieve API Key to prevent runtime crashes (Black Screen) if import.meta is not supported in the build environment
-const getApiKey = () => {
-  try {
-    return (import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY || "";
-  } catch (e) {
-    console.warn("Environment variable access failed, falling back to static gallery.");
-    return "";
-  }
-};
-
-const GOOGLE_MAPS_API_KEY = getApiKey();
-const PLACE_QUERY = "Mahal Banquet, Gwarko, Lalitpur";
 
 // Extend Window interface to include google
 declare global {
@@ -34,7 +20,10 @@ interface GalleryPhoto {
   category: string; // 'Interior' | 'Exterior' | 'Events' | 'Dining'
   attribution?: string;
   alt: string;
+  originalSrc?: string; // Add original source for lightbox
 }
+
+const PLACE_QUERY = "Mahal Banquet, Gwarko, Lalitpur";
 
 // --- GOOGLE MAPS HOOK ---
 const useGooglePlacesGallery = () => {
@@ -44,13 +33,38 @@ const useGooglePlacesGallery = () => {
   const mapDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Define loadStaticPhotos first so it can be used in the initial check and other functions
+    // Helper to safely get API Key without crashing in different environments
+    const getApiKey = () => {
+      try {
+        // Check for Vite
+        // @ts-ignore
+        if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_GOOGLE_MAPS_API_KEY) {
+          // @ts-ignore
+          return import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+        }
+        // Check for Create React App / Webpack
+        // @ts-ignore
+        if (typeof process !== 'undefined' && process.env && process.env.REACT_APP_GOOGLE_MAPS_API_KEY) {
+          // @ts-ignore
+          return process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+        }
+      } catch (e) {
+        console.warn("Could not retrieve API key from environment.");
+      }
+      return "";
+    };
+
+    const apiKey = getApiKey();
+
     const loadStaticPhotos = () => {
       const staticPhotos: GalleryPhoto[] = GALLERY_IMAGES.map((img, idx) => ({
         id: `static-${idx}`,
+        // Use optimized src from constants (which is 1024px) for grid
         src: img.src,
+        // Keep a reference to original high-res for lightbox if we had it, but for now use same
+        originalSrc: img.src.replace('h.jpeg', '.jpeg').replace('l.jpeg', '.jpeg'), 
         width: 800,
-        height: idx % 3 === 0 ? 1000 : 700, // Varied heights for masonry effect
+        height: idx % 3 === 0 ? 1000 : 700,
         category: img.category || 'Events',
         alt: img.alt,
       }));
@@ -59,8 +73,8 @@ const useGooglePlacesGallery = () => {
     };
 
     // 1. Fallback to static images immediately if no API key is present
-    if (!GOOGLE_MAPS_API_KEY) {
-      console.log("No Google Maps API Key found. Using static gallery.");
+    if (!apiKey) {
+      console.log("No Google Maps API Key found (or environment access failed). Using static gallery.");
       loadStaticPhotos();
       return;
     }
@@ -74,15 +88,23 @@ const useGooglePlacesGallery = () => {
           fields: ['photos', 'name']
         },
         (place: any, status: any) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK && place.photos && place.photos.length > 0) {
+          if (
+            window.google && 
+            window.google.maps && 
+            window.google.maps.places && 
+            status === window.google.maps.places.PlacesServiceStatus.OK && 
+            place && 
+            place.photos && 
+            place.photos.length > 0
+          ) {
             
             const fetchedPhotos: GalleryPhoto[] = place.photos.map((photo: any, index: number) => {
-              // Distribute categories for visual variety as API doesn't provide them
               const categories = ['Interior', 'Events', 'Dining', 'Exterior', 'Interior', 'Events'];
               
               return {
                 id: `google-${index}`,
-                src: photo.getUrl({ maxWidth: 1200, maxHeight: 1200 }),
+                src: photo.getUrl({ maxWidth: 1024, maxHeight: 1024 }), // Limit grid size
+                originalSrc: photo.getUrl({ maxWidth: 1600, maxHeight: 1600 }), // Higher res for lightbox
                 width: photo.width,
                 height: photo.height,
                 category: categories[index % categories.length],
@@ -91,11 +113,11 @@ const useGooglePlacesGallery = () => {
               };
             });
 
-            // Combine with some static photos to ensure full gallery if API returns few photos
             if (fetchedPhotos.length < 6) {
               const extraStatic = GALLERY_IMAGES.slice(0, 6 - fetchedPhotos.length).map((img, idx) => ({
                 id: `static-extra-${idx}`,
                 src: img.src,
+                originalSrc: img.src.replace('h.jpeg', '.jpeg'),
                 width: 800,
                 height: 800,
                 category: img.category,
@@ -120,23 +142,27 @@ const useGooglePlacesGallery = () => {
         return;
       }
 
-      // We need a map div for the service (attribution requirements)
-      const service = new window.google.maps.places.PlacesService(mapDivRef.current || document.createElement('div'));
+      try {
+        const service = new window.google.maps.places.PlacesService(mapDivRef.current || document.createElement('div'));
+        const request = { query: PLACE_QUERY };
 
-      const request = {
-        query: PLACE_QUERY,
-      };
-
-      // Use textSearch for broader discovery than findPlaceFromQuery
-      service.textSearch(request, (results: any, status: any) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK && results && results.length > 0) {
-          const placeId = results[0].place_id;
-          getPlaceDetails(service, placeId);
-        } else {
-          console.warn("Google Places API: Place not found or API error. Status:", status);
-          loadStaticPhotos();
-        }
-      });
+        service.textSearch(request, (results: any, status: any) => {
+          if (
+            status === window.google.maps.places.PlacesServiceStatus.OK && 
+            results && 
+            results.length > 0
+          ) {
+            const placeId = results[0].place_id;
+            getPlaceDetails(service, placeId);
+          } else {
+            console.warn("Google Places API: Place not found. Status:", status);
+            loadStaticPhotos();
+          }
+        });
+      } catch (err) {
+        console.error("Error utilizing PlacesService:", err);
+        loadStaticPhotos();
+      }
     };
 
     const loadScript = () => {
@@ -145,9 +171,7 @@ const useGooglePlacesGallery = () => {
         return;
       }
       
-      // Avoid duplicate script injection
       if (document.getElementById('google-maps-script')) {
-        // Wait for existing script to load
         const checkGoogle = setInterval(() => {
           if (window.google?.maps?.places) {
             clearInterval(checkGoogle);
@@ -159,7 +183,7 @@ const useGooglePlacesGallery = () => {
 
       const script = document.createElement('script');
       script.id = 'google-maps-script';
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
       script.async = true;
       script.defer = true;
       script.onload = fetchPlacesData;
@@ -293,6 +317,7 @@ const Gallery = () => {
                           src={photo.src} 
                           alt={photo.alt}
                           loading="lazy"
+                          decoding="async"
                           className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-110"
                         />
                         {/* Gradient Overlay for Readability */}
@@ -360,7 +385,7 @@ const Gallery = () => {
               <motion.img 
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                src={selectedImage.src} 
+                src={selectedImage.originalSrc || selectedImage.src} 
                 alt={selectedImage.alt} 
                 className="max-h-[70vh] md:max-h-[80vh] w-auto object-contain rounded-lg shadow-2xl border border-white/10" 
               />

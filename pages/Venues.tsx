@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Maximize2, X, Check, Star, ArrowRight, Users, Sparkles, Landmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getOptimizedImage } from '../constants';
 
 // --- DATA DEFINITION ---
 
@@ -29,11 +30,12 @@ const LUXURY_VENUES: LuxuryVenue[] = [
       'State-of-the-art lighting',
       'Flexible seating arrangements'
     ],
+    // Optimized images
     images: [
-      'https://i.imgur.com/9tKmFLI.jpeg',
-      'https://i.imgur.com/yDLYT6r.jpeg',
-      'https://i.imgur.com/KZOiW5N.jpeg',
-      'https://i.imgur.com/tJHDkAO.jpeg'
+      getOptimizedImage('https://i.imgur.com/9tKmFLI.jpeg', 'large'),
+      getOptimizedImage('https://i.imgur.com/yDLYT6r.jpeg', 'large'),
+      getOptimizedImage('https://i.imgur.com/KZOiW5N.jpeg', 'large'),
+      getOptimizedImage('https://i.imgur.com/tJHDkAO.jpeg', 'large')
     ],
     capacity: '500 - 1500 Guests'
   },
@@ -51,11 +53,11 @@ const LUXURY_VENUES: LuxuryVenue[] = [
       'Glassmorphic interior accents'
     ],
     images: [
-      'https://i.imgur.com/dygMMhD.jpeg',
-      'https://i.imgur.com/C71EpR9.jpeg',
-      'https://i.imgur.com/FxxUOpU.jpeg',
-      'https://i.imgur.com/vzD53RR.jpeg',
-      'https://i.imgur.com/mUIUeyl.jpeg'
+      getOptimizedImage('https://i.imgur.com/dygMMhD.jpeg', 'large'),
+      getOptimizedImage('https://i.imgur.com/C71EpR9.jpeg', 'large'),
+      getOptimizedImage('https://i.imgur.com/FxxUOpU.jpeg', 'large'),
+      getOptimizedImage('https://i.imgur.com/vzD53RR.jpeg', 'large'),
+      getOptimizedImage('https://i.imgur.com/mUIUeyl.jpeg', 'large')
     ],
     capacity: '50 - 200 Guests'
   }
@@ -81,6 +83,8 @@ const VenueImageSlider = ({ images, duration = 3000 }: { images: string[], durat
           key={currentIndex}
           src={images[currentIndex]}
           alt="Venue View"
+          loading="lazy"
+          decoding="async"
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
@@ -100,7 +104,7 @@ const VenueCard: React.FC<{ venue: LuxuryVenue; onOpen: (v: LuxuryVenue) => void
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="group relative h-[500px] md:h-[500px] lg:h-[600px] w-full rounded-[25px] overflow-hidden shadow-2xl hover:-translate-y-2 transition-transform duration-500"
+      className="group relative h-[480px] md:h-[500px] lg:h-[600px] w-full rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl hover:-translate-y-2 transition-transform duration-500"
     >
       {/* 1. Background Slideshow */}
       <VenueImageSlider images={venue.images} />
@@ -108,7 +112,7 @@ const VenueCard: React.FC<{ venue: LuxuryVenue; onOpen: (v: LuxuryVenue) => void
       {/* 2. Glassmorphic Overlay (Apple Style) */}
       <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end">
         {/* Crystal Card Body */}
-        <div className="relative bg-white/10 backdrop-blur-2xl border border-white/20 p-6 md:p-8 rounded-[25px] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] overflow-hidden">
+        <div className="relative bg-white/10 backdrop-blur-xl md:backdrop-blur-2xl border border-white/20 p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] overflow-hidden">
           
           {/* Shimmer Effect */}
           <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
@@ -120,7 +124,7 @@ const VenueCard: React.FC<{ venue: LuxuryVenue; onOpen: (v: LuxuryVenue) => void
              </div>
           </div>
 
-          <h3 className="text-xl md:text-3xl font-cinzel text-ivory mb-2 md:mb-3 drop-shadow-md">
+          <h3 className="text-xl md:text-3xl font-cinzel text-ivory mb-2 md:mb-3 drop-shadow-md pr-10">
             {venue.name}
           </h3>
           
@@ -138,7 +142,7 @@ const VenueCard: React.FC<{ venue: LuxuryVenue; onOpen: (v: LuxuryVenue) => void
 
             <button 
               onClick={() => onOpen(venue)}
-              className="bg-gold-500 hover:bg-white text-onyx px-5 py-3 md:px-6 md:py-3 rounded-xl font-cinzel font-bold text-[10px] md:text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)] flex items-center justify-center gap-2"
+              className="bg-gold-500 hover:bg-white text-onyx px-5 py-3 md:px-6 md:py-3 rounded-xl font-cinzel font-bold text-[10px] md:text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)] flex items-center justify-center gap-2 active:scale-95"
             >
               View More <ArrowRight size={14} />
             </button>
@@ -155,7 +159,7 @@ const VenueModal: React.FC<{ venue: LuxuryVenue; onClose: () => void }> = ({ ven
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-6"
+      className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-6"
     >
       <div 
         className="absolute inset-0 bg-onyx/90 backdrop-blur-xl" 
@@ -163,18 +167,18 @@ const VenueModal: React.FC<{ venue: LuxuryVenue; onClose: () => void }> = ({ ven
       />
       
       <motion.div
-        initial={{ y: 50, opacity: 0, scale: 0.95 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        exit={{ y: 50, opacity: 0, scale: 0.95 }}
+        initial={{ y: "100%", opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: "100%", opacity: 0 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative w-full max-w-7xl h-full md:h-auto md:max-h-[90vh] bg-onyx rounded-none md:rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border border-white/10"
+        className="relative w-full max-w-7xl h-full md:h-auto min-h-[100dvh] md:min-h-0 md:max-h-[90vh] bg-onyx rounded-none md:rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border border-white/10"
       >
         {/* Close Button */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 z-50 w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/40 border border-white/10 text-white/80 hover:bg-gold-500 hover:text-onyx hover:border-gold-500 flex items-center justify-center transition-all duration-300 backdrop-blur-md"
+          className="absolute top-4 right-4 z-50 w-12 h-12 md:w-12 md:h-12 rounded-full bg-black/40 border border-white/10 text-white/80 hover:bg-gold-500 hover:text-onyx hover:border-gold-500 flex items-center justify-center transition-all duration-300 backdrop-blur-md active:scale-90"
         >
-          <X size={20} className="md:w-6 md:h-6" />
+          <X size={24} className="md:w-6 md:h-6" />
         </button>
 
         {/* 1. Modal Slideshow Section */}
@@ -192,7 +196,7 @@ const VenueModal: React.FC<{ venue: LuxuryVenue; onClose: () => void }> = ({ ven
            {/* Background Noise/Texture */}
            <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")` }}></div>
            
-           <div className="relative z-10 p-6 md:p-12 lg:p-16 h-full overflow-y-auto custom-scrollbar">
+           <div className="relative z-10 p-6 md:p-12 lg:p-16 h-full overflow-y-auto custom-scrollbar flex flex-col">
              
              <div className="hidden lg:block mb-10">
                <div className="flex items-center gap-3 mb-4">
@@ -237,7 +241,7 @@ const VenueModal: React.FC<{ venue: LuxuryVenue; onClose: () => void }> = ({ ven
              <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-white/10 mt-auto pb-6 md:pb-0">
                <Link 
                  to="/contact" 
-                 className="flex-1 bg-gradient-to-r from-gold-500 to-gold-600 text-onyx py-4 md:py-5 rounded-xl font-bold uppercase tracking-widest text-xs hover:shadow-[0_0_25px_rgba(212,175,55,0.4)] text-center flex items-center justify-center gap-2 transition-all"
+                 className="flex-1 bg-gradient-to-r from-gold-500 to-gold-600 text-onyx py-4 md:py-5 rounded-xl font-bold uppercase tracking-widest text-xs hover:shadow-[0_0_25px_rgba(212,175,55,0.4)] text-center flex items-center justify-center gap-2 transition-all active:scale-95"
                >
                  Inquire Availability <ArrowRight size={14} />
                </Link>
@@ -253,6 +257,15 @@ const VenueModal: React.FC<{ venue: LuxuryVenue; onClose: () => void }> = ({ ven
 
 const Venues = () => {
   const [selectedVenue, setSelectedVenue] = useState<LuxuryVenue | null>(null);
+
+  // Lock body scroll when modal open
+  useEffect(() => {
+    if (selectedVenue) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [selectedVenue]);
 
   return (
     <div className="bg-onyx min-h-screen relative overflow-x-hidden selection:bg-gold-500/30">
@@ -305,7 +318,7 @@ const Venues = () => {
 
       {/* Main Layout Grid */}
       <div className="container mx-auto px-4 md:px-6 pb-20 md:pb-24 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 max-w-[1400px] mx-auto">
           {LUXURY_VENUES.map((venue) => (
             <VenueCard 
               key={venue.id} 

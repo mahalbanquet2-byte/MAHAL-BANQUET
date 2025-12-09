@@ -376,7 +376,7 @@ const MenuTierCard = ({ title, data, tierColor, icon }: any) => {
 
         <button 
           onClick={() => setIsExpanded(!isExpanded)}
-          className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-cinzel font-bold text-xs uppercase tracking-[0.2em] transition-all duration-300 relative overflow-hidden group/btn ${
+          className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-cinzel font-bold text-xs uppercase tracking-[0.2em] transition-all duration-300 relative overflow-hidden group/btn active:scale-95 ${
             isExpanded 
               ? 'bg-white/10 text-white border border-white/20' 
               : 'bg-white/5 text-white/60 border border-white/10 hover:bg-white/10 hover:text-white hover:border-white/30'
@@ -457,7 +457,7 @@ const Catering = () => {
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <button 
                   onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="group bg-gold-500 text-onyx px-8 py-4 rounded-full font-cinzel font-bold uppercase tracking-widest text-xs hover:bg-white transition-all duration-500 shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] flex items-center gap-2"
+                  className="group bg-gold-500 text-onyx px-8 py-4 rounded-full font-cinzel font-bold uppercase tracking-widest text-xs hover:bg-white transition-all duration-500 shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] flex items-center gap-2 active:scale-95"
                 >
                   View Collections <ChevronDown size={14} className="group-hover:translate-y-1 transition-transform" />
                 </button>
@@ -535,7 +535,7 @@ const Catering = () => {
                 </div>
                 <p className="text-white/40 text-xs mb-8 md:mb-10 tracking-wider">per plate (excluding taxes)</p>
                 
-                <Link to="/contact" className="inline-flex items-center justify-center w-full py-4 border border-gold-500/30 rounded-xl text-gold-400 hover:bg-gold-500 hover:text-onyx transition-all uppercase text-xs font-bold tracking-[0.2em] group">
+                <Link to="/contact" className="inline-flex items-center justify-center w-full py-4 border border-gold-500/30 rounded-xl text-gold-400 hover:bg-gold-500 hover:text-onyx transition-all uppercase text-xs font-bold tracking-[0.2em] group active:scale-95">
                   Get Custom Quote <ChevronRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <p className="text-white/20 text-[10px] mt-4 italic">Rates subject to seasonal change</p>
@@ -644,7 +644,7 @@ const Catering = () => {
                   ))}
                 </ul>
 
-                <button className="w-full py-4 border border-white/20 rounded-xl text-white/80 hover:bg-white hover:text-onyx transition-all uppercase text-xs font-bold tracking-[0.2em]">
+                <button className="w-full py-4 border border-white/20 rounded-xl text-white/80 hover:bg-white hover:text-onyx transition-all uppercase text-xs font-bold tracking-[0.2em] active:scale-95">
                   View Service Catalog
                 </button>
 
@@ -704,18 +704,18 @@ const Catering = () => {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-xs uppercase tracking-widest text-white/40">Full Name</label>
-                        <input type="text" name="fullName" required className="w-full bg-black/20 border-b border-white/10 text-ivory p-3 focus:outline-none focus:border-gold-500 transition-colors rounded-none" placeholder="Enter your name" />
+                        <input type="text" name="fullName" required className="w-full bg-black/20 border-b border-white/10 text-ivory p-4 focus:outline-none focus:border-gold-500 transition-colors rounded-none placeholder:text-white/20" placeholder="Enter your name" />
                       </div>
                       <div className="space-y-2">
                          <label className="text-xs uppercase tracking-widest text-white/40">Phone Number</label>
-                        <input type="text" name="phone" required className="w-full bg-black/20 border-b border-white/10 text-ivory p-3 focus:outline-none focus:border-gold-500 transition-colors rounded-none" placeholder="+977" />
+                        <input type="text" name="phone" required className="w-full bg-black/20 border-b border-white/10 text-ivory p-4 focus:outline-none focus:border-gold-500 transition-colors rounded-none placeholder:text-white/20" placeholder="+977" />
                       </div>
                     </div>
                     
                     <div className="grid md:grid-cols-2 gap-6">
                        <div className="space-y-2">
                          <label className="text-xs uppercase tracking-widest text-white/40">Event Type</label>
-                         <select name="eventType" className="w-full bg-black/20 border-b border-white/10 text-ivory p-3 focus:outline-none focus:border-gold-500 transition-colors rounded-none">
+                         <select name="eventType" className="w-full bg-black/20 border-b border-white/10 text-ivory p-4 focus:outline-none focus:border-gold-500 transition-colors rounded-none appearance-none">
                            <option className="bg-onyx" value="Wedding Reception">Wedding Reception</option>
                            <option className="bg-onyx" value="Corporate Gala">Corporate Gala</option>
                            <option className="bg-onyx" value="Anniversary">Anniversary</option>
@@ -724,16 +724,16 @@ const Catering = () => {
                        </div>
                        <div className="space-y-2">
                          <label className="text-xs uppercase tracking-widest text-white/40">Expected Guests</label>
-                         <input type="number" name="guestCount" className="w-full bg-black/20 border-b border-white/10 text-ivory p-3 focus:outline-none focus:border-gold-500 transition-colors rounded-none" placeholder="e.g. 500" />
+                         <input type="number" name="guestCount" className="w-full bg-black/20 border-b border-white/10 text-ivory p-4 focus:outline-none focus:border-gold-500 transition-colors rounded-none placeholder:text-white/20" placeholder="e.g. 500" />
                        </div>
                     </div>
 
                     <div className="space-y-2">
                       <label className="text-xs uppercase tracking-widest text-white/40">Additional Requests</label>
-                      <textarea name="requests" rows={3} className="w-full bg-black/20 border-b border-white/10 text-ivory p-3 focus:outline-none focus:border-gold-500 transition-colors rounded-none" placeholder="Tell us about your menu preferences..."></textarea>
+                      <textarea name="requests" rows={3} className="w-full bg-black/20 border-b border-white/10 text-ivory p-4 focus:outline-none focus:border-gold-500 transition-colors rounded-none placeholder:text-white/20" placeholder="Tell us about your menu preferences..."></textarea>
                     </div>
 
-                    <button type="submit" className="w-full bg-gold-500 text-onyx font-bold uppercase tracking-[0.2em] py-5 rounded-sm hover:bg-white transition-all duration-500 shadow-[0_0_20px_rgba(212,175,55,0.3)] mt-8">
+                    <button type="submit" className="w-full bg-gold-500 text-onyx font-bold uppercase tracking-[0.2em] py-5 rounded-sm hover:bg-white transition-all duration-500 shadow-[0_0_20px_rgba(212,175,55,0.3)] mt-8 active:scale-95">
                       Submit Inquiry
                     </button>
                   </form>
