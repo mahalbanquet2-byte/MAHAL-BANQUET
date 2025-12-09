@@ -1,11 +1,21 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GALLERY_IMAGES } from '../constants';
 import { X, ZoomIn, MapPin, Loader2, Image as ImageIcon, RefreshCw, Info, Aperture } from 'lucide-react';
 
 // --- CONFIGURATION ---
-// Get API Key from environment variables (Vite standard)
-const GOOGLE_MAPS_API_KEY = (import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY || ""; 
+// Safely retrieve API Key to prevent runtime crashes (Black Screen) if import.meta is not supported in the build environment
+const getApiKey = () => {
+  try {
+    return (import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY || "";
+  } catch (e) {
+    console.warn("Environment variable access failed, falling back to static gallery.");
+    return "";
+  }
+};
+
+const GOOGLE_MAPS_API_KEY = getApiKey();
 const PLACE_QUERY = "Mahal Banquet, Gwarko, Lalitpur";
 
 // Extend Window interface to include google
